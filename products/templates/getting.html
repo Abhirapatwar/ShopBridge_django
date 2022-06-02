@@ -1,0 +1,85 @@
+{% extends 'base.html' %} {% block content %}
+<!-- <h4>view all list</h4> -->
+
+<div class="row">
+  <div class="col-sm-4">
+    <h4 class="text-center alert alert-info mt-2">New Entry</h4>
+    <form action="" method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <input type="submit" value="Add" class="btn btn-warning" />
+    </form>
+  </div>
+
+  <div class="col-7 offset-1">
+    <h4 class="text-center alert alert-info mt-2">Records</h4>
+    <nav class="navbar bg-light mb-2">
+        <div class="container-fluid">
+          <a class="navbar-brand">Search Product...</a>
+          <form class="d-flex" method="GET" role="search">
+            <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+
+
+    {% if products %}
+    <table class="table mt-1">
+      <thead>
+        <tr>
+          <!-- <th scope="col">Id</th> -->
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Category</th>
+          <th scope="col">Description</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <!-- <th scope="row">{{ p.id }}</th> -->
+          <td>{{ p.name }}</td>
+          <td>{{ p.price }}</td>
+          <td>{{ p.type }}</td>
+          <td>{{ p.description }}</td>
+          <td>
+            <form
+              action="{% url 'update' p.id %}"
+              method="POST"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <input type="submit" value="Update" class="btn btn-secondary" />
+            </form>
+            <form
+              action="{% url 'deletedata' p.id %}"
+              method="POST"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <input type="submit" value="Delete" class="btn btn-danger" />
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        <div class="">
+          <span>
+            {% if page_obj.has_previous %}
+            <a href="?page={{page_obj.previous_page_number}}">prev</a>
+            {% endif %}
+            <span>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{page_obj.next_page_number}}">next</a>
+            {% endif %}
+          </span>
+        </div>
+      </tbody>
+    </table>
+    {% else %}
+    <h4 class="text-center mt-2">No Records</h4>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}

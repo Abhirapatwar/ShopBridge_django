@@ -1,0 +1,8 @@
+body{
+    background:url("https://source.unsplash.com/collection/190727/1600x900") no-repeat center center/cover;
+            content: "";
+            width: 100vw;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.9;
+}
